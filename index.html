@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ML Model Comparator & Tutorials</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to right top, #1b1e2f, #1e3c72, #2a5298);
+      color: white;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .navbar {
+      background-color: #0a0f24;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    }
+    .tab-content {
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 12px;
+      margin-top: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+    .section-ribbon::before {
+      content: attr(data-title);
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      background: #ff4081;
+      color: white;
+      font-weight: bold;
+      padding: 6px 14px;
+      font-size: 14px;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .card-custom {
+      background-color: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: #e0e0e0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+    .chatbox {
+      max-height: 300px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    .chat-message {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 75%;
+    }
+    .chat-user {
+      background-color: #007bff;
+      align-self: flex-end;
+    }
+    .chat-bot {
+      background-color: #333;
+      align-self: flex-start;
+    }
+    .tutorial-intro {
+      background-color: #ffffff;
+      color: #002244;
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+    .tutorial-card {
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    }
+    .tutorial-card h5 {
+      color: #ffce00;
+    }
+    .tutorial-card p {
+      color: #eeeeee;
+    }
+    .btn-outline-light:hover {
+      background-color: #ffce00;
+      color: black;
+      border-color: #ffce00;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-dark px-3">
+    <span class="navbar-brand mb-0 h1">ML Model Comparator & Tutorials with Chatbot</span>
+  </nav>
+
+  <div class="container mt-4">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="compare-tab" data-bs-toggle="tab" data-bs-target="#compare" type="button" role="tab">AI Comparator</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tutorial-tab" data-bs-toggle="tab" data-bs-target="#tutorial" type="button" role="tab">Tutorials</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="chat-tab" data-bs-toggle="tab" data-bs-target="#chat" type="button" role="tab">Chatbot</button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+      <!-- AI Comparator Tab -->
+      <div class="tab-pane fade show active section-ribbon" id="compare" role="tabpanel" data-title="AI Comparator">
+        <h3 class="mt-3">Select Dataset and Algorithms</h3>
+        <select class="form-select mb-3" id="datasetSelect">
+          <option selected disabled>Choose a dataset</option>
+        </select>
+        <select class="form-select mb-3" id="algo1">
+          <option selected disabled>Select First Algorithm</option>
+        </select>
+        <select class="form-select mb-3" id="algo2">
+          <option selected disabled>Select Second Algorithm</option>
+        </select>
+        <button class="btn btn-warning" onclick="compareModels()">Compare Algorithms</button>
+        <div id="result" class="mt-4"></div>
+      </div>
+
+      <!-- Tutorials Tab -->
+      <div class="tab-pane fade section-ribbon" id="tutorial" role="tabpanel" data-title="ML Tutorials">
+        <div class="tutorial-intro">
+          <h2 class="text-center">Self Learning Data Analysis</h2>
+          <h4 class="text-center">Tutorials Overview</h4>
+          <p>This section helps students understand core concepts in machine learning such as clustering, dimensionality reduction, regression, classification, and anomaly detection. Each tutorial comes with examples, simplified explanations, and optional datasets or visualizations to test your understanding in real time.</p>
+        </div>
+        <div id="tutorialList" class="row"></div>
+      </div>
+
+      <!-- Chatbot Tab -->
+      <div class="tab-pane fade section-ribbon" id="chat" role="tabpanel" data-title="ML Chatbot">
+        <h3 class="mt-3">Ask Your Questions</h3>
+        <div class="chatbox p-3 mb-3" id="chatbox"></div>
+        <div class="input-group">
+          <input type="text" class="form-control" id="userInput" placeholder="Type your message...">
+          <button class="btn btn-success" onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const datasetSelect = document.getElementById("datasetSelect");
+    const algo1 = document.getElementById("algo1");
+    const algo2 = document.getElementById("algo2");
+    const resultDiv = document.getElementById("result");
+    const tutorialList = document.getElementById("tutorialList");
+    const chatbox = document.getElementById("chatbox");
+    const apiBase = "http://127.0.0.1:5000";
+
+    const datasets = ["Iris Dataset", "California Housing", "Boston Housing", "MNIST Digits", "CIFAR-10", "Wine Quality", "Diabetes", "Titanic"];
+    const algorithms = ["Random Forest Regressor", "Decision Tree", "SVM", "LightGBM", "Gradient Boosting", "AdaBoost", "XGBoost", "Linear Regression", "Ridge Regression", "Lasso Regression"];
+
+    datasets.forEach(name => datasetSelect.innerHTML += `<option value="${name}">${name}</option>`);
+    algorithms.forEach(algo => {
+      algo1.innerHTML += `<option value="${algo}">${algo}</option>`;
+      algo2.innerHTML += `<option value="${algo}">${algo}</option>`;
+    });
+
+    async function compareModels() {
+      const dataset = datasetSelect.value;
+      const algorithm1 = algo1.value;
+      const algorithm2 = algo2.value;
+
+      if (!dataset || !algorithm1 || !algorithm2) {
+        alert("Please select dataset and both algorithms.");
+        return;
+      }
+
+      resultDiv.innerHTML = "<p>Loading...</p>";
+
+      try {
+        const response = await fetch(`${apiBase}/compare`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ dataset, algorithm1, algorithm2 })
+        });
+
+        const data = await response.json();
+        if (data.metrics) {
+          resultDiv.innerHTML = `
+            <div class="card card-custom p-4">
+              <h4 class="text-success">Best Algorithm: ${data.best_algorithm}</h4>
+              <p><strong class="text-warning">MSE:</strong> ${data.metrics.MSE1} vs ${data.metrics.MSE2}</p>
+              <p><strong class="text-warning">MAE:</strong> ${data.metrics.MAE1} vs ${data.metrics.MAE2}</p>
+              <p><strong class="text-warning">R²:</strong> ${data.metrics.R2_1} vs ${data.metrics.R2_2}</p>
+            </div>
+          `;
+        } else {
+          resultDiv.innerHTML = "<p>Error in comparison result.</p>";
+        }
+      } catch {
+        resultDiv.innerHTML = "<p>Failed to fetch data. Check backend.</p>";
+      }
+    }
+
+    async function loadTutorials() {
+      try {
+        const response = await fetch(`${apiBase}/tutorials`);
+        const data = await response.json();
+        tutorialList.innerHTML = data.tutorials.map(tut => `
+          <div class="col-md-6">
+            <div class="tutorial-card">
+              <h5>${tut.title}</h5>
+              <p>${tut.description}</p>
+              <button class="btn btn-outline-light btn-sm" onclick="alert(\`${tut.content}\`)">View Content</button>
+            </div>
+          </div>
+        `).join('');
+      } catch {
+        tutorialList.innerHTML = "<p>Error loading tutorials.</p>";
+      }
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      chatbox.innerHTML += `<div class='chat-message chat-user'>${msg}</div>`;
+      input.value = "";
+
+      try {
+        const response = await fetch(`${apiBase}/chatbot`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg })
+        });
+
+        const data = await response.json();
+        chatbox.innerHTML += `<div class='chat-message chat-bot'>${data.response}</div>`;
+        chatbox.scrollTop = chatbox.scrollHeight;
+      } catch {
+        chatbox.innerHTML += `<div class='chat-message chat-bot'>Error connecting to chatbot.</div>`;
+      }
+    }
+
+    window.onload = loadTutorials;
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
