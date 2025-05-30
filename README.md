@@ -12,6 +12,13 @@ An interactive web-based application for comparing machine learning regression a
 
 ---
 
+## Screenshots
+![Screenshot 2025-05-30 212023](https://github.com/user-attachments/assets/837d34e0-2724-44fe-8719-364a8a8ddc5a)
+![Screenshot 2025-05-30 212058](https://github.com/user-attachments/assets/b92e4879-a760-4512-8d99-dc6bca3f9eee)
+
+
+
+
 ## 🛠️ Technologies Used
 
 * **Frontend**: HTML, CSS,  JavaScript
